@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller Automotriz - Portal de Mantenimiento</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+
+    <!-- Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">🚗 Taller Automotriz</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center" id="nav-links">
+                    <li class="nav-item"><a class="nav-link active" href="#" onclick="showSection('inicio')">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('servicios')">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('solicitud')" id="link-solicitud" style="display:none;">Solicitar Mantenimiento</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('mis-solicitudes')" id="link-mis-solicitudes" style="display:none;">Mis Mantenimientos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="showSection('admin')" id="link-admin" style="display:none;">Panel Admin</a></li>
+                    <li class="nav-item ms-lg-3">
+                        <button class="btn btn-outline-light btn-sm" id="btn-auth" onclick="toggleAuthModal()">Iniciar Sesión</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Contenido -->
+    <main class="container my-4">
+
+        <!-- Sección Inicio -->
+        <section id="sec-inicio" class="content-section">
+            <div class="p-5 mb-4 bg-white rounded-3 shadow-sm border text-center">
+                <div class="container-fluid py-5">
+                    <h1 class="display-5 fw-bold text-primary">Soluciones Integrales Automotrices</h1>
+                    <p class="col-md-8 mx-auto fs-4 text-muted">Mantenimiento preventivo y correctivo de la más alta calidad para garantizar la seguridad de tu vehículo.</p>
+                    <button class="btn btn-primary btn-lg mt-3" onclick="showSection('servicios')">Ver Catálogo de Servicios</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Servicios -->
+        <section id="sec-servicios" class="content-section" style="display:none;">
+            <h2 class="mb-4 text-center fw-bold">Nuestros Servicios de Mantenimiento</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Mantenimiento Preventivo</h5>
+                            <p class="card-text">Cambio de aceite, filtros, revisión de niveles, frenos y diagnóstico electrónico general.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Sistema de Frenos</h5>
+                            <p class="card-text">Rectificación de discos, cambio de pastillas, líquido de frenos y purgado de sistema.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Suspensión y Dirección</h5>
+                            <p class="card-text">Alineación, balanceo, revisión de amortiguadores, terminales y rotulas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Solicitud de Mantenimiento -->
+        <section id="sec-solicitud" class="content-section" style="display:none;">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card shadow">
+                        <div class="card-body p-4">
+                            <h3 class="card-title mb-4 text-center">Registrar Solicitud de Mantenimiento</h3>
+                            <form id="form-solicitud" onsubmit="guardarSolicitud(event)">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Placa del Vehículo (Ej: ABC-1234)</label>
+                                        <input type="text" class="form-control" id="placa" required pattern="^[A-Z]{3}-\d{3,4}$" placeholder="ABC-1234">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Marca</label>
+                                        <input type="text" class="form-control" id="marca" required>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Modelo</label>
+                                        <input type="text" class="form-control" id="modelo" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Año</label>
+                                        <input type="number" class="form-control" id="anio" min="1990" max="2026" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Kilometraje (km)</label>
+                                        <input type="number" class="form-control" id="kilometraje" min="0" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tipo de Servicio Principal</label>
+                                    <select class="form-select" id="tipo-servicio" required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="Mantenimiento Preventivo">Mantenimiento Preventivo</option>
+                                        <option value="Frenos">Frenos</option>
+                                        <option value="Suspensión">Suspensión y Dirección</option>
+                                        <option value="Afinación Motor">Afinación de Motor</option>
+                                    </select>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Fecha Preferida</label>
+                                        <input type="date" class="form-control" id="fecha" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Hora Preferida</label>
+                                        <input type="time" class="form-control" id="hora" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label d-block">Prioridad de Atención</label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="prioridad" id="p-normal" value="Normal" checked>
+                                        <label class="form-check-label" for="p-normal">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="prioridad" id="p-urgente" value="Urgente">
+                                        <label class="form-check-label" for="p-urgente">Urgente</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Observaciones adicionales</label>
+                                    <textarea class="form-control" id="observaciones" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Enviar Solicitud</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Mis Mantenimientos (Cliente) -->
+        <section id="sec-mis-solicitudes" class="content-section" style="display:none;">
+            <h2 class="mb-4">Mis Solicitudes Registradas</h2>
+            <div class="table-responsive bg-white p-3 rounded shadow-sm">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Vehículo</th>
+                            <th>Servicio</th>
+                            <th>Fecha/Hora</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-mis-solicitudes">
+                        <!-- Dinámico JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Sección Panel Admin -->
+        <section id="sec-admin" class="content-section" style="display:none;">
+            <h2 class="mb-4">Panel de Administración General</h2>
+            <div class="table-responsive bg-white p-3 rounded shadow-sm">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Placa</th>
+                            <th>Vehículo</th>
+                            <th>Servicio</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-admin-solicitudes">
+                        <!-- Dinámico JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Login -->
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Iniciar Sesión</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-login" onsubmit="iniciarSesion(event)">
+                        <div class="mb-3">
+                            <label class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="login-email" required placeholder="ejemplo@correo.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" id="login-password" required>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100">Ingresar</button>
+                    </form>
+                    <div class="mt-3 text-muted small">
+                        <p class="mb-1"><strong>Cuentas de prueba:</strong></p>
+                        <p class="mb-1">🔹 Admin: admin@taller.com / 1234</p>
+                        <p class="mb-0">🔹 Cliente: cliente1@correo.com / 1234</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Bootstrap & SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
